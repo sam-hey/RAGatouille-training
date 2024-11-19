@@ -18,10 +18,13 @@ torch = ">=1.13"
 llama-index = ">=0.7"
 langchain_core = ">=0.1.4"
 langchain = ">=0.1.0"
-colbert-ai = { git = "https://github.com/sam021313/ColBERT-training.git"}
+colbert-ai = { git = "https://github.com/sam021313/ColBERT-training.git", branch = "main"}
 onnx = "^1.15.0"
 srsly = "2.4.8"
 fast-pytorch-kmeans= "0.2.0.1"
+
+
+
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.0"
@@ -30,6 +33,7 @@ mkdocs-material = "^9.1.18"
 mkdocstrings = "^0.22.0"
 mkdocstrings-python = "^1.1.2"
 ruff = "^0.1.9"
+#colbert-ai = { path = "/Users/A200009373/Documents/Coding/ColBERT-training", develop = true }
 
 [build-system]
 requires = ["poetry-core"]

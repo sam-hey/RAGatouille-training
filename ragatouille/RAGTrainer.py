@@ -16,6 +16,7 @@ class RAGTrainer:
         self,
         model_name: str,
         pretrained_model_name: str,
+        output_dir: Union[str, Path],
         language_code: str = "en",
         n_usable_gpus: int = -1,
     ):
@@ -38,6 +39,7 @@ class RAGTrainer:
             pretrained_model_name_or_path=pretrained_model_name,
             n_gpu=n_usable_gpus,
             training_mode=True,
+            index_root=output_dir,
         )
         self.negative_miner: Union[HardNegativeMiner, None] = None
         self.collection: list[str] = []
@@ -190,6 +192,7 @@ class RAGTrainer:
         use_relu: bool = False,
         warmup_steps: Union[int, Literal["auto"]] = "auto",
         accumsteps: int = 1,
+        output_dir: Optional[Union[str, Path]] = None,
     ) -> str:
         """
         Launch training or fine-tuning of a ColBERT model.

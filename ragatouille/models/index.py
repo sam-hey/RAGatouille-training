@@ -34,7 +34,8 @@ class ModelIndex(ABC):
         overwrite: Union[bool, str] = "reuse",
         verbose: bool = True,
         **kwargs,
-    ) -> "ModelIndex": ...
+    ) -> "ModelIndex":
+        ...
 
     @staticmethod
     @abstractmethod
@@ -44,7 +45,8 @@ class ModelIndex(ABC):
         index_config: dict[str, Any],
         config: ColBERTConfig,
         verbose: bool = True,
-    ) -> "ModelIndex": ...
+    ) -> "ModelIndex":
+        ...
 
     @abstractmethod
     def build(
@@ -54,7 +56,8 @@ class ModelIndex(ABC):
         index_name: Optional["str"] = None,
         overwrite: Union[bool, str] = "reuse",
         verbose: bool = True,
-    ) -> None: ...
+    ) -> None:
+        ...
 
     @abstractmethod
     def search(
@@ -69,13 +72,16 @@ class ModelIndex(ABC):
         pids: Optional[List[int]] = None,
         force_reload: bool = False,
         **kwargs,
-    ) -> list[tuple[list, list, list]]: ...
+    ) -> list[tuple[list, list, list]]:
+        ...
 
     @abstractmethod
-    def _search(self, query: str, k: int, pids: Optional[List[int]] = None): ...
+    def _search(self, query: str, k: int, pids: Optional[List[int]] = None):
+        ...
 
     @abstractmethod
-    def _batch_search(self, query: list[str], k: int): ...
+    def _batch_search(self, query: list[str], k: int):
+        ...
 
     @abstractmethod
     def add(
@@ -88,7 +94,8 @@ class ModelIndex(ABC):
         new_collection: List[str],
         verbose: bool = True,
         **kwargs,
-    ) -> None: ...
+    ) -> None:
+        ...
 
     @abstractmethod
     def delete(
@@ -99,10 +106,12 @@ class ModelIndex(ABC):
         index_name: str,
         pids_to_remove: Union[TypeVar("T"), List[TypeVar("T")]],
         verbose: bool = True,
-    ) -> None: ...
+    ) -> None:
+        ...
 
     @abstractmethod
-    def _export_config(self) -> dict[str, Any]: ...
+    def _export_config(self) -> dict[str, Any]:
+        ...
 
     def export_metadata(self) -> dict[str, Any]:
         config = self._export_config()
