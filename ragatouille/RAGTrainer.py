@@ -7,6 +7,7 @@ from ragatouille.data import TrainingDataProcessor
 from ragatouille.models import ColBERT, LateInteractionModel
 from ragatouille.negative_miners import HardNegativeMiner, SimpleMiner
 from ragatouille.utils import seeded_shuffle
+import mlflow
 
 
 class RAGTrainer:
@@ -192,7 +193,6 @@ class RAGTrainer:
         use_relu: bool = False,
         warmup_steps: Union[int, Literal["auto"]] = "auto",
         accumsteps: int = 1,
-        output_dir: Optional[Union[str, Path]] = None,
     ) -> str:
         """
         Launch training or fine-tuning of a ColBERT model.
@@ -212,6 +212,21 @@ class RAGTrainer:
         Returns:
             model_path: str - Path to the trained model.
         """
+        mlflow.log_params(
+            {
+                "batch_size": batch_size,
+                "nbits": nbits,
+                "maxsteps": maxsteps,
+                "use_ib_negatives": use_ib_negatives,
+                "learning_rate": learning_rate,
+                "dim": dim,
+                "doc_maxlen": doc_maxlen,
+                "use_relu": use_relu,
+                "warmup_steps": warmup_steps,
+                "accumsteps": accumsteps,
+            }
+        )
+
         if not self.training_triplets:
             total_triplets = sum(
                 1 for _ in open(str(self.data_dir / "triples.train.colbert.jsonl"), "r")
