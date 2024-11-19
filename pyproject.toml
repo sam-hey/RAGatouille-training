@@ -18,7 +18,7 @@ torch = ">=1.13"
 llama-index = ">=0.7"
 langchain_core = ">=0.1.4"
 langchain = ">=0.1.0"
-colbert-ai = "0.2.20"
+colbert-ai = { git = "https://github.com/sam021313/ColBERT-training.git"}
 onnx = "^1.15.0"
 srsly = "2.4.8"
 fast-pytorch-kmeans= "0.2.0.1"
