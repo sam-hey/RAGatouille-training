@@ -36,6 +36,7 @@ class RAGTrainer:
         self.model_name = model_name
         self.pretrained_model_name = pretrained_model_name
         self.language_code = language_code
+        self.output_dir = output_dir
         self.model: Union[LateInteractionModel, None] = ColBERT(
             pretrained_model_name_or_path=pretrained_model_name,
             n_gpu=n_usable_gpus,
@@ -181,6 +182,26 @@ class RAGTrainer:
 
         return data_out_path
 
+    def train_with_checkpoint(self, path: str):
+        """
+        Train a model with a given checkpoint.
+
+        Parameters:
+            path: Union[str, Path] - Path to the checkpoint to use for training.
+        """
+        self.model = ColBERT(
+            pretrained_model_name_or_path=path,
+            n_gpu=-1,
+            training_mode=True,
+            index_root=self.output_dir,
+        )
+
+        colbertConfig = ColBERTConfig.load_from_checkpoint(path)
+
+        colbertConfig.resume = True
+
+        self.model.train(data_dir=self.data_dir, training_config=colbertConfig)
+
     def train(
         self,
         batch_size: int = 32,
@@ -250,7 +271,8 @@ class RAGTrainer:
             warmup=int(total_triplets // batch_size * 0.1)
             if warmup_steps == "auto"
             else warmup_steps,
-            save_every=int(total_triplets // batch_size // 10),
+            # save_every=int(total_triplets // batch_size // 10),
+            save_every=1000,
         )
 
         return self.model.train(data_dir=self.data_dir, training_config=training_config)

@@ -30,6 +30,38 @@ class ColBERT(LateInteractionModel):
         index_root: Optional[str] = None,
         **kwargs,
     ):
+        """
+        Initializes the ColBERT model with the given parameters.
+
+        Args:
+            pretrained_model_name_or_path (Union[str, Path]): Path to the pretrained model or index.
+            n_gpu (int, optional): Number of GPUs to use. Defaults to -1, which means using all available GPUs.
+            index_name (Optional[str], optional): Name of the index to load. Defaults to None.
+            verbose (int, optional): Verbosity level. Defaults to 1.
+            load_from_index (bool, optional): Whether to load the model from an index. Defaults to False.
+            training_mode (bool, optional): Whether the model is in training mode. Defaults to False.
+            index_root (Optional[str], optional): Root directory for the index. Defaults to None.
+            **kwargs: Additional keyword arguments for the ColBERTConfig.
+
+        Attributes:
+            verbose (int): Verbosity level.
+            collection (None): Placeholder for collection data.
+            pid_docid_map (None): Placeholder for PID to DocID mapping.
+            docid_pid_map (None): Placeholder for DocID to PID mapping.
+            docid_metadata_map (None): Placeholder for DocID to metadata mapping.
+            base_model_max_tokens (int): Maximum number of tokens for the base model.
+            loaded_from_index (bool): Whether the model was loaded from an index.
+            model_index (Optional[ModelIndex]): Loaded model index.
+            index_path (str): Path to the index.
+            config (ColBERTConfig): Configuration for the ColBERT model.
+            run_config (RunConfig): Configuration for the run.
+            checkpoint (str): Path to the checkpoint.
+            index_name (str): Name of the index.
+            index_root (str): Root directory for the index.
+            inference_ckpt (Checkpoint): Checkpoint for inference.
+            run_context (Run): Context for the run.
+            searcher (None): Placeholder for the searcher.
+        """
         self.verbose = verbose
         self.collection = None
         self.pid_docid_map = None
@@ -439,6 +471,17 @@ class ColBERT(LateInteractionModel):
         return self.model_index._batch_search(query, k)
 
     def train(self, data_dir, training_config: ColBERTConfig):
+        """
+        Trains the ColBERT model using the provided data directory and training configuration.
+
+        Args:
+            data_dir (Path): The directory containing the training data files.
+            training_config (ColBERTConfig): The configuration settings for training.
+
+        Returns:
+            None
+        """
+
         training_config = ColBERTConfig.from_existing(self.config, training_config)
         training_config.nway = 2
         with Run().context(self.run_config):
