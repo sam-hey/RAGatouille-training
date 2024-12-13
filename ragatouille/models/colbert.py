@@ -7,6 +7,7 @@ from typing import Dict, List, Literal, Optional, TypeVar, Union
 
 import numpy as np
 import srsly
+import json
 import torch
 from colbert import Trainer
 from colbert.infra import ColBERTConfig, Run, RunConfig
@@ -313,8 +314,13 @@ class ColBERT(LateInteractionModel):
 
     def _save_index_metadata(self):
         assert self.model_index is not None
-
-        model_metadata = srsly.read_json(self.index_path + "/metadata.json")
+        try: 
+            model_metadata = srsly.read_json(self.index_path + "/metadata.json")
+        except ValueError:
+            with open(self.index_path + "/metadata.json", "r") as f:
+                model_metadata = json.load(f)
+                model_metadata["config"]["maxsteps"] = 500000
+        
         index_config = self.model_index.export_metadata()
         index_config["index_name"] = self.index_name
         # Ensure that the additional metadata we store does not collide with anything else.
